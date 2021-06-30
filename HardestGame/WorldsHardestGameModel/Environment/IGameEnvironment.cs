@@ -6,10 +6,6 @@ namespace WorldsHardestGameModel.Environment
 {
     public interface IGameEnvironment
     {
-        int CELL_WIDTH { get; }
-
-        int CELL_HEIGHT { get; }
-        
         Player player { get; set; }
 
         List<Wall> walls { get; set; }

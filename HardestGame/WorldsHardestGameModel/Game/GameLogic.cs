@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
+using System.Collections.Generic;
 
 using WorldsHardestGameModel.Entities;
+using WorldsHardestGameModel.Extensions;
 using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
 using WorldsHardestGameModel.Levels.Parser;
@@ -26,7 +28,7 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 1;
+            this.level = 8;
             this.fails = 0;
         }
 
@@ -49,9 +51,12 @@ namespace WorldsHardestGameModel.Game
 
         public void UpdateEntityStates()
         {
+
             gameEnvironment.player.UpdatePosition();
 
-            ObstacleWallCollisionCheck();
+            CheckPlayerWallCollision();
+
+            CheckObstacleWallCollision();
 
             foreach(var obstacle in gameEnvironment.obstacles)
             {
@@ -61,11 +66,38 @@ namespace WorldsHardestGameModel.Game
         }
 
 
+        public void CheckPlayerWallCollision()
+        {
+            var unmovableDirectionsDict = new Dictionary<Dir_4, bool>()
+            {
+                { Dir_4.UP, false },
+                { Dir_4.DOWN, false },
+                { Dir_4.LEFT, false },
+                { Dir_4.RIGHT, false }
+            };
+
+
+            foreach (var wall in gameEnvironment.walls)
+            {
+                var unmovableDirections = gameEnvironment.player.CheckCollision(wall);
+                if (unmovableDirections.Count > 0)
+                {
+                    foreach (var unmovableDirection in unmovableDirections)
+                    {
+                        unmovableDirectionsDict[unmovableDirection] = true;
+                    }
+                }
+
+            }
+            gameEnvironment.player.RegisterUnmovableDirections(unmovableDirectionsDict);
+        }
+
+
         /// <summary>
         /// Only obstacles moving in the XY direction changes direction upon
         /// wall collision. The other two have a pre-degined movement configuration.
         /// </summary>
-        private void ObstacleWallCollisionCheck()
+        private void CheckObstacleWallCollision()
         {
             foreach(var obstacle in gameEnvironment.obstacles)
             {

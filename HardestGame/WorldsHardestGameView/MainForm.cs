@@ -98,10 +98,10 @@ namespace WorldsHardestGameView
                         var color = (j % 2 == i % 2) ? Color.White : filledSquareColor;
                         var rectangle = new Rectangle
                             (
-                                j * game.gameEnvironment.CELL_WIDTH + XMargin,
-                                i * game.gameEnvironment.CELL_HEIGHT + YMargin,
-                                game.gameEnvironment.CELL_WIDTH,
-                                game.gameEnvironment.CELL_HEIGHT
+                                j * GameEnvironment.CELL_WIDTH + XMargin,
+                                i * GameEnvironment.CELL_HEIGHT + YMargin,
+                                GameEnvironment.CELL_WIDTH,
+                                GameEnvironment.CELL_HEIGHT
                             );
                         DrawFilledSquare(graphics, color, rectangle);
                     }
@@ -150,8 +150,8 @@ namespace WorldsHardestGameView
             foreach(var obstacle in game.gameEnvironment.obstacles)
             {
                 var rect = new Rectangle(
-                        (int)obstacle.centre.X - game.gameEnvironment.CELL_WIDTH / 4 + XMargin,
-                        (int)obstacle.centre.Y - game.gameEnvironment.CELL_HEIGHT / 4 + YMargin,
+                        (int)obstacle.centre.X - GameEnvironment.CELL_WIDTH / 4 + XMargin,
+                        (int)obstacle.centre.Y - GameEnvironment.CELL_HEIGHT / 4 + YMargin,
                         Obstacle.RADIUS,
                         Obstacle.RADIUS
                     );

@@ -1,6 +1,10 @@
 ﻿using System.Drawing;
+using System.Collections.Generic;
 
+using WorldsHardestGameModel.Entities;
 using WorldsHardestGameModel.EntityBase;
+using WorldsHardestGameModel.Environment;
+using WorldsHardestGameModel.MovementTypes;
 
 namespace WorldsHardestGameModel.Extensions
 {
@@ -24,28 +28,85 @@ namespace WorldsHardestGameModel.Extensions
         }
 
 
-        public static bool IsCollision(this RectangularEntity rect, CircularEntity circ)
-        {
-            return circ.IsCollision(new PointF(circ.centre.X + (float)CircularEntity.RADIUS, circ.centre.Y)) ||
-                   circ.IsCollision(new PointF(circ.centre.X - (float)CircularEntity.RADIUS, rect.topLeftPosition.Y)) ||
-                   circ.IsCollision(new PointF(circ.centre.X, circ.centre.Y + (float)CircularEntity.RADIUS)) ||
-                   circ.IsCollision(new PointF(circ.centre.X + (float)CircularEntity.RADIUS, circ.centre.Y + (float)CircularEntity.RADIUS));
-        }
+        /// <summary>
+        /// Given one of the coordinates of player and wall, and width/height of the wall, check if
+        /// player lies within the range.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        public static bool WithinBounds(float a, float b, float r) => a >= b - r && a <= b + r;
+
 
 
         /// <summary>
-        /// Check if any of the 4 edges of a square lies within the
-        /// boundaries of a square. Player-wall collision
+        /// ___________                   ________
+        /// |         | _________        | wall   |
+        /// |         ||   wall  |       |        |
+        /// | player  -----R.....|       |     ...|A______
+        /// |         | COLLISION|       |_____.__||player|
+        /// |_________A..........|             X---.      | => COLLISION
+        ///           |__________|                 |______|
+        ///   (i)                               (ii)   
+        /// 
+        /// case(i) player's rightmost hitpoint (centreX + width / 2)
+        /// is within the bounds of the wall in the X-axis and A is within bounds in the Y-axis.
+        /// So, the player can't move right.
+        /// 
+        /// case(ii) player's leftmost hitpoint (centreX - width / 2) is within
+        /// the bounds of the wall in the X-axis and A is within bounds in the Y-axis.
+        /// So, the player can't move left.
+        /// 
         /// </summary>
-        /// <param name="rect1"></param>
-        /// <param name="rect2"></param>
+        /// <param name="player"></param>
+        /// <param name="wall"></param>
         /// <returns></returns>
-        public static bool IsCollision(this RectangularEntity rect1, RectangularEntity rect2)
+        public static List<Dir_4> CheckCollision(this Player player, Wall wall)
         {
-            return rect1.IsCollision(rect2.topLeftPosition) ||
-                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X + rect2.width, rect2.topLeftPosition.Y)) ||
-                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X, rect2.topLeftPosition.Y + rect2.height)) ||
-                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X + rect2.width, rect2.topLeftPosition.Y + rect2.width));
+
+            var retVal = new List<Dir_4>();
+
+            var playerCentre = new PointF(player.topLeftPosition.X + Player.width / 2,
+                                          player.topLeftPosition.Y + Player.height / 2);
+
+            var playerTopY = player.topLeftPosition.Y;
+            var playerBottomY = player.topLeftPosition.Y + Player.height;
+            var playerLeftX = player.topLeftPosition.X;
+            var playerRightX = player.topLeftPosition.X + Player.width;
+
+            var wallCentre = new PointF(wall.topLeftPosition.X + wall.width / 2,
+                                        wall.topLeftPosition.Y + wall.height / 2);
+
+            var leftHitPoint = playerCentre.X  - Player.width / 2;
+            var rightHitPoint = playerCentre.X + Player.width / 2;
+            var upperHitPoint = playerCentre.Y - Player.height / 2;
+            var lowerHitPoint = playerCentre.Y + Player.height / 2;
+
+            //TODO : REMOVE DUPLICATES
+
+            if (WithinBounds(leftHitPoint, wallCentre.X, wall.width/2) &&
+               (WithinBounds(playerTopY, wallCentre.Y, wall.height/2 - 1) || WithinBounds(playerBottomY, wallCentre.Y, wall.height/2 - 1)))
+            {
+                retVal.Add(Dir_4.LEFT);
+            }
+            if (WithinBounds(rightHitPoint, wallCentre.X, wall.width/2) &&
+                (WithinBounds(playerTopY, wallCentre.Y, wall.height/2 - 1) || WithinBounds(playerBottomY, wallCentre.Y, wall.height/2 - 1)))
+            {
+                retVal.Add(Dir_4.RIGHT);
+            }
+            if (WithinBounds(upperHitPoint, wallCentre.Y, wall.height/2) &&
+               (WithinBounds(playerLeftX, wallCentre.X, wall.width/2  - 1) || WithinBounds(playerRightX, wallCentre.X, wall.width/2 - 1)))
+            {
+                retVal.Add(Dir_4.UP);
+            }
+            if (WithinBounds(lowerHitPoint, wallCentre.Y, wall.height/2) &&
+               (WithinBounds(playerLeftX, wallCentre.X, wall.width/2 - 1) || WithinBounds(playerRightX, wallCentre.X, wall.width/2 - 1)))
+            {
+                retVal.Add(Dir_4.DOWN);
+            }
+
+            return retVal;
         }
     }
 }

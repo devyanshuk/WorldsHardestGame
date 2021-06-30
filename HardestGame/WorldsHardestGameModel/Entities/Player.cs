@@ -10,7 +10,7 @@ namespace WorldsHardestGameModel.Entities
     {
         public new const int width = 40, height = 40;
 
-        const float velocity = 5.0F;
+        public const float velocity = 5.0F;
 
         /// <summary>
         /// value for a key will be true if the user is
@@ -83,5 +83,13 @@ namespace WorldsHardestGameModel.Entities
                 return;
             }
         }
+
+
+        public void RegisterUnmovableDirections(Dictionary<Dir_4, bool> unmovableDirections)
+        {
+            blockedDirections = unmovableDirections;
+        }
+
+
     }
 }

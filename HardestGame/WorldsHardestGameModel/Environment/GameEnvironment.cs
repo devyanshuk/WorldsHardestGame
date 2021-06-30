@@ -10,8 +10,8 @@ namespace WorldsHardestGameModel.Environment
 
         private readonly ILocalSettings localSettings;
 
-        public int CELL_WIDTH => 60;
-        public int CELL_HEIGHT => 60;
+        public const int CELL_WIDTH = 60;
+        public const int CELL_HEIGHT = 60;
 
         public Player player { get; set; }
         public List<Wall> walls { get; set; }

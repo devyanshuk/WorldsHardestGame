@@ -165,8 +165,8 @@ namespace WorldsHardestGameModel.Levels.Parser
                 for (int j = 0; j < MAP_WIDTH; j++)
                 {
                     var currChar = line[j];
-                    var pos = new PointF(environment.CELL_WIDTH * j, environment.CELL_HEIGHT * i);
-                    var adjustedPos = new PointF(pos.X + environment.CELL_WIDTH / 2, pos.Y + environment.CELL_HEIGHT / 2);
+                    var pos = new PointF(GameEnvironment.CELL_WIDTH * j, GameEnvironment.CELL_HEIGHT * i);
+                    var adjustedPos = new PointF(pos.X + GameEnvironment.CELL_WIDTH / 2, pos.Y + GameEnvironment.CELL_HEIGHT / 2);
 
                     if (circularMovementId.ContainsKey(currChar))
                     {
@@ -222,7 +222,7 @@ namespace WorldsHardestGameModel.Levels.Parser
             }
             else if (WallIdentifiers.Contains(currChar))
             {
-                var wall = new Wall(environment.CELL_WIDTH, environment.CELL_HEIGHT, pos);
+                var wall = new Wall(GameEnvironment.CELL_WIDTH, GameEnvironment.CELL_HEIGHT, pos);
                 environment.walls.Add(wall);
                 if (ObstalceBoundaryIdentifiers.Contains(currChar))
                 {
@@ -311,8 +311,8 @@ namespace WorldsHardestGameModel.Levels.Parser
                 var velocity = float.Parse(line[2]);
                 var x = float.Parse(line[3]);
                 var y = float.Parse(line[4]);
-                var centre = new PointF(x * environment.CELL_WIDTH + environment.CELL_WIDTH / 2,
-                                        y * environment.CELL_HEIGHT + environment.CELL_HEIGHT / 2);
+                var centre = new PointF(x * GameEnvironment.CELL_WIDTH + GameEnvironment.CELL_WIDTH / 2,
+                                        y * GameEnvironment.CELL_HEIGHT + GameEnvironment.CELL_HEIGHT / 2);
 
                 for (int i = 5; i < line.Length; i++)
                 {
@@ -366,10 +366,10 @@ namespace WorldsHardestGameModel.Levels.Parser
         {
             try
             {
-                var topLeftX = float.Parse(line[1]) * environment.CELL_WIDTH;
-                var topLeftY = float.Parse(line[2]) * environment.CELL_HEIGHT;
-                var width = float.Parse(line[3]) * environment.CELL_WIDTH;
-                var height = float.Parse(line[4]) * environment.CELL_HEIGHT;
+                var topLeftX = float.Parse(line[1]) * GameEnvironment.CELL_WIDTH;
+                var topLeftY = float.Parse(line[2]) * GameEnvironment.CELL_HEIGHT;
+                var width = float.Parse(line[3]) * GameEnvironment.CELL_WIDTH;
+                var height = float.Parse(line[4]) * GameEnvironment.CELL_HEIGHT;
                 var topLeftPosition = new PointF(topLeftX, topLeftY);
 
                 environment.checkPoints.Add(new CheckPoint(width, height, topLeftPosition));
@@ -392,8 +392,8 @@ namespace WorldsHardestGameModel.Levels.Parser
             {
                 n = new PointF
                 {
-                    X = newPos.X + (containsHorizontalChar ? environment.CELL_WIDTH / 2 : 0),
-                    Y = newPos.Y + (containsVerticalChar ? environment.CELL_HEIGHT / 2 : 0)
+                    X = newPos.X + (containsHorizontalChar ? GameEnvironment.CELL_WIDTH / 2 : 0),
+                    Y = newPos.Y + (containsVerticalChar ? GameEnvironment.CELL_HEIGHT / 2 : 0)
                 };
                 return true;
             }
@@ -406,13 +406,13 @@ namespace WorldsHardestGameModel.Levels.Parser
             (var centreOfRotation, var direction, var velocity) = circularMovementId[currChar];
             var result = new List<Obstacle>();
 
-            var x = pos.X + environment.CELL_WIDTH / 2 +
-                    (LeftAdjustedPositionIdentifiers.Contains(currChar) ? -environment.CELL_WIDTH / 2 :
-                    RightAdjustedPositionIdentifiers.Contains(currChar) ? environment.CELL_WIDTH / 2 :
+            var x = pos.X + GameEnvironment.CELL_WIDTH / 2 +
+                    (LeftAdjustedPositionIdentifiers.Contains(currChar) ? -GameEnvironment.CELL_WIDTH / 2 :
+                    RightAdjustedPositionIdentifiers.Contains(currChar) ? GameEnvironment.CELL_WIDTH / 2 :
                     0);
 
-            var y = pos.Y + environment.CELL_HEIGHT / 2 +
-                    (currChar == VerticalAdjustmentIdentifier ? environment.CELL_HEIGHT / 2 :
+            var y = pos.Y + GameEnvironment.CELL_HEIGHT / 2 +
+                    (currChar == VerticalAdjustmentIdentifier ? GameEnvironment.CELL_HEIGHT / 2 :
                      0);
 
             result.Add(new Obstacle

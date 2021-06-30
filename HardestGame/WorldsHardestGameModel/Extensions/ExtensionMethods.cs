@@ -50,13 +50,13 @@ namespace WorldsHardestGameModel.Extensions
         ///           |__________|                 |______|
         ///   (i)                               (ii)   
         /// 
-        /// case(i) player's rightmost hitpoint (centreX + width / 2)
+        /// case(i) player's rightmost hitpoint R (centreX + width / 2)
         /// is within the bounds of the wall in the X-axis and A is within bounds in the Y-axis.
-        /// So, the player can't move right.
+        /// In this case, the player can't move right.
         /// 
-        /// case(ii) player's leftmost hitpoint (centreX - width / 2) is within
+        /// case(ii) player's leftmost hitpoint X (centreX - width / 2) is within
         /// the bounds of the wall in the X-axis and A is within bounds in the Y-axis.
-        /// So, the player can't move left.
+        /// In this case, the player can't move left.
         /// 
         /// </summary>
         /// <param name="player"></param>

@@ -14,8 +14,8 @@ namespace WorldsHardestGameView
 {
     public partial class MainForm : Form
     {
-        private const int XMargin = 130;
-        private const int YMargin = 70;
+        private const int XOffset = 100;
+        private const int YOffset = 40;
 
         private readonly IWindsorContainer container;
         private readonly IGameLogic game;
@@ -28,7 +28,7 @@ namespace WorldsHardestGameView
         private Color obstacleColor = Color.Blue;
         private Color borderColor = Color.Black;
         private Color checkpointColor = Color.FromArgb(100, 0, 255, 0);
-        private Color filledSquareColor = Color.DarkOliveGreen;//Color.FromArgb(100, 46, 58, 25);
+        private Color filledSquareColor = Color.DarkOliveGreen;
 
         #endregion
 
@@ -98,8 +98,8 @@ namespace WorldsHardestGameView
                         var color = (j % 2 == i % 2) ? Color.White : filledSquareColor;
                         var rectangle = new Rectangle
                             (
-                                j * GameEnvironment.CELL_WIDTH + XMargin,
-                                i * GameEnvironment.CELL_HEIGHT + YMargin,
+                                j * GameEnvironment.CELL_WIDTH + XOffset,
+                                i * GameEnvironment.CELL_HEIGHT + YOffset,
                                 GameEnvironment.CELL_WIDTH,
                                 GameEnvironment.CELL_HEIGHT
                             );
@@ -116,8 +116,8 @@ namespace WorldsHardestGameView
             {
                 using (var brush = new SolidBrush(Color.Black))
                 {
-                    graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(200, 50));
-                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(1200, 50));
+                    graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(150, 50));
+                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(900, 50));
                 }
             }
         }
@@ -126,8 +126,8 @@ namespace WorldsHardestGameView
         private void DrawPlayer(Graphics graphics)
         {
             var player = game.gameEnvironment.player;
-            var borderRect = new Rectangle((int)player.topLeftPosition.X + XMargin,
-                                            (int)player.topLeftPosition.Y + YMargin,
+            var borderRect = new Rectangle((int)player.topLeftPosition.X + XOffset,
+                                            (int)player.topLeftPosition.Y + YOffset,
                                             Player.width,
                                             Player.height);
             DrawFilledSquare(graphics, borderColor, borderRect);
@@ -150,8 +150,8 @@ namespace WorldsHardestGameView
             foreach(var obstacle in game.gameEnvironment.obstacles)
             {
                 var rect = new Rectangle(
-                        (int)obstacle.centre.X - GameEnvironment.CELL_WIDTH / 4 + XMargin,
-                        (int)obstacle.centre.Y - GameEnvironment.CELL_HEIGHT / 4 + YMargin,
+                        (int)obstacle.centre.X - GameEnvironment.CELL_WIDTH / 4 + XOffset,
+                        (int)obstacle.centre.Y - GameEnvironment.CELL_HEIGHT / 4 + YOffset,
                         Obstacle.RADIUS,
                         Obstacle.RADIUS
                     );
@@ -177,8 +177,8 @@ namespace WorldsHardestGameView
             {
                 var rect = new Rectangle
                     (
-                        (int)checkpoint.topLeftPosition.X + XMargin,
-                        (int)checkpoint.topLeftPosition.Y + YMargin,
+                        (int)checkpoint.topLeftPosition.X + XOffset,
+                        (int)checkpoint.topLeftPosition.Y + YOffset,
                         (int)checkpoint.width,
                         (int)checkpoint.height
                     );
@@ -226,8 +226,8 @@ namespace WorldsHardestGameView
                 DrawFilledSquare(graphics,
                                  Color.Black,
                                  new Rectangle(
-                                     (int)b.topLeftPosition.X + XMargin,
-                                     (int)b.topLeftPosition.Y + YMargin,
+                                     (int)b.topLeftPosition.X + XOffset,
+                                     (int)b.topLeftPosition.Y + YOffset,
                                      (int)b.width,
                                      (int)b.height)
                                  );

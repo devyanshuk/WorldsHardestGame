@@ -35,10 +35,9 @@ namespace WorldsHardestGameView
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1600, 900);
+            this.ClientSize = new System.Drawing.Size(1400, 800);
             this.Text = "World's Hardest Game";
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
 
             this.updateTimer = new Timer(this.components);
             this.updateTimer.Interval = 40;

@@ -83,27 +83,31 @@ namespace WorldsHardestGameModel.Extensions
             var upperHitPoint = playerCentre.Y - Player.height / 2;
             var lowerHitPoint = playerCentre.Y + Player.height / 2;
 
-            //TODO : REMOVE DUPLICATES
+            if (WithinBounds(playerTopY, wallCentre.Y, wall.height / 2 - 1) || WithinBounds(playerBottomY, wallCentre.Y, wall.height / 2 - 1))
+            {
+                if (WithinBounds(leftHitPoint, wallCentre.X, wall.width / 2))
+                {
+                    retVal.Add(Dir_4.LEFT);
+                }
 
-            if (WithinBounds(leftHitPoint, wallCentre.X, wall.width/2) &&
-               (WithinBounds(playerTopY, wallCentre.Y, wall.height/2 - 1) || WithinBounds(playerBottomY, wallCentre.Y, wall.height/2 - 1)))
-            {
-                retVal.Add(Dir_4.LEFT);
+                if (WithinBounds(rightHitPoint, wallCentre.X, wall.width / 2))
+                {
+                    retVal.Add(Dir_4.RIGHT);
+                }
             }
-            if (WithinBounds(rightHitPoint, wallCentre.X, wall.width/2) &&
-                (WithinBounds(playerTopY, wallCentre.Y, wall.height/2 - 1) || WithinBounds(playerBottomY, wallCentre.Y, wall.height/2 - 1)))
+
+            if (WithinBounds(playerLeftX, wallCentre.X, wall.width / 2 - 1) || WithinBounds(playerRightX, wallCentre.X, wall.width / 2 - 1))
             {
-                retVal.Add(Dir_4.RIGHT);
-            }
-            if (WithinBounds(upperHitPoint, wallCentre.Y, wall.height/2) &&
-               (WithinBounds(playerLeftX, wallCentre.X, wall.width/2  - 1) || WithinBounds(playerRightX, wallCentre.X, wall.width/2 - 1)))
-            {
-                retVal.Add(Dir_4.UP);
-            }
-            if (WithinBounds(lowerHitPoint, wallCentre.Y, wall.height/2) &&
-               (WithinBounds(playerLeftX, wallCentre.X, wall.width/2 - 1) || WithinBounds(playerRightX, wallCentre.X, wall.width/2 - 1)))
-            {
-                retVal.Add(Dir_4.DOWN);
+                if (WithinBounds(upperHitPoint, wallCentre.Y, wall.height / 2))
+                {
+                    retVal.Add(Dir_4.UP);
+                }
+
+                if (WithinBounds(lowerHitPoint, wallCentre.Y, wall.height / 2))
+                {
+                    retVal.Add(Dir_4.DOWN);
+                }
+
             }
 
             return retVal;

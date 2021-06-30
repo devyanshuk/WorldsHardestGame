@@ -208,7 +208,7 @@ namespace WorldsHardestGameView
 
 
         /// <summary>
-        /// Re-draw the environment every 20ms ~60FPS
+        /// Re-draw the environment every 40ms ~25FPS
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

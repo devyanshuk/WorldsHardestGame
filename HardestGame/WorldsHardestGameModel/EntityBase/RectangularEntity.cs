@@ -19,8 +19,8 @@ namespace WorldsHardestGameModel.EntityBase
         {
             return pos.X >= topLeftPosition.X &&
                    pos.X <= topLeftPosition.X + width &&
-                   pos.X >= topLeftPosition.Y &&
-                   pos.X <= topLeftPosition.Y + height;
+                   pos.Y >= topLeftPosition.Y &&
+                   pos.Y <= topLeftPosition.Y + height;
         }
     }
 }

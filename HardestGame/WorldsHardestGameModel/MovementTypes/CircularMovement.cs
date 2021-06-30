@@ -32,14 +32,14 @@ namespace WorldsHardestGameModel.MovementTypes
             if (currPos.Y == centreOfRot.Y)
             {
                 retVal = (float)(currPos.X < centreOfRot.X ?
-                                 Math.PI + velocity + Math.PI / 180 :
+                                 Math.PI + velocity * Math.PI / 180 :
                                  2 * Math.PI * velocity * Math.PI / 180);
             }
             else if (currPos.X == centreOfRot.X)
             {
                 retVal = (float)(currPos.Y < centreOfRot.Y ?
-                                 270 * Math.PI / 180 * velocity * Math.PI / 180 :
-                                 Math.PI / 2 * velocity * Math.PI / 180);
+                                 270 * Math.PI / 180 + velocity * Math.PI / 180 :
+                                 Math.PI / 2 + velocity * Math.PI / 180);
             }
 
             return retVal;

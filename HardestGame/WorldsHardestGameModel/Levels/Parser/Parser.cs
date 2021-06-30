@@ -195,14 +195,14 @@ namespace WorldsHardestGameModel.Levels.Parser
                     }
                     if (yMovementId.ContainsKey(currChar))
                     {
-                        var yVelocity = xMovementId[currChar];
+                        var yVelocity = yMovementId[currChar];
                         environment.obstacles.Add
                                         (
                                             new Obstacle
                                             (
                                                 adjustedPos,
                                                 yVelocity,
-                                                new XYMovement(yVelocity, adjustedPos, Dir_4.LEFT)
+                                                new XYMovement(yVelocity, adjustedPos, Dir_4.DOWN)
                                             )
 
                                         );
@@ -283,7 +283,7 @@ namespace WorldsHardestGameModel.Levels.Parser
                 for(int i = 1; i < line.Length; i += 2)
                 {
                     var id = char.Parse(line[i]);
-                    var velocity = float.Parse(line[i + 2]);
+                    var velocity = float.Parse(line[i + 1]);
                     yMovementId.Add(id, velocity);
                 }
             }

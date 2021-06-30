@@ -165,7 +165,7 @@ namespace WorldsHardestGameView
                 rect.X += 5;
                 rect.Y += 5;
                 rect.Width -= 10;
-                rect.Width -= 10;
+                rect.Height -= 10;
                 DrawFilledCircle(graphics, obstacleColor, rect);
             }
         }

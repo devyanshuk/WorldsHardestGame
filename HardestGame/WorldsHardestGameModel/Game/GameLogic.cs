@@ -121,27 +121,7 @@ namespace WorldsHardestGameModel.Game
                 {
                     foreach(var obstacleBoundary in gameEnvironment.obstacleBoundaries)
                     {
-                        PointF posToCheck = new PointF();
-
-                        switch (xymov.currentDir)
-                        {
-                            case Dir_4.LEFT:
-                                posToCheck = new PointF(obstacle.centre.X - Obstacle.RADIUS / 2, obstacle.centre.Y);
-                                break;
-
-                            case Dir_4.RIGHT:
-                                posToCheck = new PointF(obstacle.centre.X + Obstacle.RADIUS / 2, obstacle.centre.Y);
-                                break;
-
-                            case Dir_4.DOWN:
-                                posToCheck = new PointF(obstacle.centre.X, obstacle.centre.Y + Obstacle.RADIUS / 2);
-                                break;
-
-                            case Dir_4.UP:
-                                posToCheck = new PointF(obstacle.centre.X, obstacle.centre.Y - Obstacle.RADIUS / 2);
-                                break;
-                        }
-                        if (obstacleBoundary.IsCollision(posToCheck))
+                        if (obstacleBoundary.IsCollision(obstacle))
                         {
                             xymov.ChangeDirection();
                         }

@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.x
     - name: Restore dependencies
-      run: dotnet restore  HardestGame/WorldsHardestGameTests/WorldsHardestGameModel.csproj
+      run: dotnet restore  HardestGame/WorldsHardestGameModel/WorldsHardestGameModel.csproj
     - name: Build
       run: dotnet build HardestGame/WorldsHardestGameModel/WorldsHardestGameModel.csproj
     - name: Test

@@ -1,7 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
 using System.Collections.Generic;
 
-using WorldsHardestGameModel.Entities;
 using WorldsHardestGameModel.Extensions;
 using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
@@ -14,6 +13,8 @@ namespace WorldsHardestGameModel.Game
     {
         private readonly IParser parser;
         private readonly ILocalSettings localSettings;
+
+        public static EventHandler onPlayerDeath;
 
         public IGameEnvironment gameEnvironment { get; }
 
@@ -75,7 +76,7 @@ namespace WorldsHardestGameModel.Game
                 if (gameEnvironment.player.IsCollision(obstacle))
                 {
                     fails++;
-                    gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;
+                    onPlayerDeath?.Invoke(this, null);
                 }
 
                 // XY direction moving obstacle - Wall collision
@@ -117,6 +118,12 @@ namespace WorldsHardestGameModel.Game
 
             }
             gameEnvironment.player.RegisterUnmovableDirections(unmovableDirectionsDict);
+        }
+
+
+        public void OnFail()
+        {
+            gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;
         }
     }
 }

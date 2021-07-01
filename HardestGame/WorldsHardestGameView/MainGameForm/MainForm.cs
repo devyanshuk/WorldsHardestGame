@@ -32,10 +32,16 @@ namespace WorldsHardestGameView.MainGameForm
 
         #endregion
 
+        
+        private bool playerDead = false;
+        private int playerDeathAnimationOpacity = 255;
+        private int playerDeathAnimationVelocity = -20;
+
 
 
         public MainForm()
         {
+            GameLogic.onPlayerDeath += OnPlayerDeath;
             container = new WindsorContainer().Install(new DependencyInstaller());
             game = container.Resolve<IGameLogic>();
             localSettings = container.Resolve<ILocalSettings>();
@@ -131,7 +137,9 @@ namespace WorldsHardestGameView.MainGameForm
                                             (int)player.topLeftPosition.Y + YOffset,
                                             Player.width,
                                             Player.height);
-            DrawFilledSquare(graphics, borderColor, borderRect);
+
+            var borderCol = playerDead ? Color.FromArgb(playerDeathAnimationOpacity, borderColor) : borderColor;
+            DrawFilledSquare(graphics, borderCol, borderRect);
 
             if (borderRect.Width <= 10 || borderRect.Height <= 10)
             {
@@ -142,7 +150,9 @@ namespace WorldsHardestGameView.MainGameForm
             borderRect.Y += 5;
             borderRect.Width -= 10;
             borderRect.Height -= 10;
-            DrawFilledSquare(graphics, playerColor, borderRect);
+
+            var playerCol = playerDead ? Color.FromArgb(playerDeathAnimationOpacity, playerColor) : playerColor;
+            DrawFilledSquare(graphics, playerCol, borderRect);
         }
 
 
@@ -215,7 +225,20 @@ namespace WorldsHardestGameView.MainGameForm
         /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            game.UpdateEntityStates();
+            if (!playerDead)
+            {
+                game.UpdateEntityStates();
+            }
+            else
+            {
+                playerDeathAnimationOpacity += playerDeathAnimationVelocity;
+                if (playerDeathAnimationOpacity <= 0)
+                {
+                    playerDead = false;
+                    playerDeathAnimationOpacity = 255;
+                    game.OnFail();
+                }
+            }
             Invalidate();
         }
 
@@ -233,6 +256,12 @@ namespace WorldsHardestGameView.MainGameForm
                                      (int)b.height)
                                  );
             }
+        }
+
+
+        public void OnPlayerDeath(object sender, EventArgs e)
+        {
+            playerDead = true;
         }
 
 

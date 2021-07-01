@@ -57,8 +57,6 @@ namespace WorldsHardestGameModel.Game
 
             CheckPlayerWallCollision();
 
-            CheckObstacleWallCollision();
-
             CheckPlayerObstacleCollision();
 
             foreach(var obstacle in gameEnvironment.obstacles)
@@ -73,10 +71,23 @@ namespace WorldsHardestGameModel.Game
         {
             foreach(var obstacle in gameEnvironment.obstacles)
             {
+                // Player-Obstacle collision
                 if (gameEnvironment.player.IsCollision(obstacle))
                 {
                     fails++;
                     gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;
+                }
+
+                // XY direction moving obstacle - Wall collision
+                if (obstacle.movement is XYMovement xymov)
+                {
+                    foreach (var obstacleBoundary in gameEnvironment.obstacleBoundaries)
+                    {
+                        if (obstacleBoundary.IsCollision(obstacle))
+                        {
+                            xymov.ChangeDirection();
+                        }
+                    }
                 }
             }
         }
@@ -106,28 +117,6 @@ namespace WorldsHardestGameModel.Game
 
             }
             gameEnvironment.player.RegisterUnmovableDirections(unmovableDirectionsDict);
-        }
-
-
-        /// <summary>
-        /// Only obstacles moving in the XY direction changes direction upon
-        /// wall collision. The other two have a pre-degined movement configuration.
-        /// </summary>
-        private void CheckObstacleWallCollision()
-        {
-            foreach(var obstacle in gameEnvironment.obstacles)
-            {
-                if (obstacle.movement is XYMovement xymov)
-                {
-                    foreach(var obstacleBoundary in gameEnvironment.obstacleBoundaries)
-                    {
-                        if (obstacleBoundary.IsCollision(obstacle))
-                        {
-                            xymov.ChangeDirection();
-                        }
-                    }
-                }
-            }
         }
     }
 }

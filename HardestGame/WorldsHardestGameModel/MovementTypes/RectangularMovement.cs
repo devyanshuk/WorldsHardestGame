@@ -54,7 +54,7 @@ namespace WorldsHardestGameModel.MovementTypes
             }
         }
 
-        public override void ChangeDirection()
+        private void ChangeDirection()
         {
             var index = movementType == Dir_C.ANTICLOCKWISE ? 3 : 1;
             currentDir = MOVEMENTS[(MOVEMENTS.IndexOf(currentDir) + index) % 4];
@@ -67,14 +67,17 @@ namespace WorldsHardestGameModel.MovementTypes
             var height = boundaryHeight;
             var width = boundaryWidth;
 
-            return ((pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2 + 1) &&
-                    pos.Y >= (topLeftPos.Y + (height - GameEnvironment.CELL_HEIGHT / 2)) ||
-                   (pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2 + 1) &&
-                    pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2 + 1)) ||
-                   (pos.X >= topLeftPos.X + (width - GameEnvironment.CELL_WIDTH / 2) &&
-                   pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2 + 1)) ||
-                   (pos.X >= topLeftPos.X + (width - GameEnvironment.CELL_WIDTH / 2) &&
-                   pos.Y >= topLeftPos.Y + height - GameEnvironment.CELL_HEIGHT / 2)));
+            return (pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2) &&
+                    pos.Y >= (topLeftPos.Y + height - GameEnvironment.CELL_HEIGHT / 2)) ||
+
+                   (pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2) &&
+                    pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2)) ||
+
+                   (pos.X >= (topLeftPos.X + width - GameEnvironment.CELL_WIDTH / 2) &&
+                   pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2)) ||
+
+                   (pos.X >= (topLeftPos.X + width - GameEnvironment.CELL_WIDTH / 2) &&
+                   pos.Y >= (topLeftPos.Y + height - GameEnvironment.CELL_HEIGHT / 2));
         }
 
 

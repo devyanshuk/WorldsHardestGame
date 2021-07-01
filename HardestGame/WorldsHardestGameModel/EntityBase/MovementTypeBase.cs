@@ -13,11 +13,7 @@ namespace WorldsHardestGameModel.EntityBase
             this.currentPosition = currentPosition;
         }
 
-        #region abstract methods
-
         public abstract void Move();
-        public abstract void ChangeDirection();
 
-        #endregion
     }
 }

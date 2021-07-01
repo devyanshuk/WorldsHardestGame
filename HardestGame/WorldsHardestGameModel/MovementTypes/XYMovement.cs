@@ -27,7 +27,7 @@ namespace WorldsHardestGameModel.MovementTypes
                                  0;
         }
 
-        public override void ChangeDirection()
+        public void ChangeDirection()
         {
             currentDir = currentDir == Dir_4.LEFT ? Dir_4.RIGHT :
                          currentDir == Dir_4.RIGHT ? Dir_4.LEFT :

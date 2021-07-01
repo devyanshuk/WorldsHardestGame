@@ -30,7 +30,7 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 8;
+            this.level = 1;
             this.fails = 0;
             this.coinsCollected = 0;
 

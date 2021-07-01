@@ -59,11 +59,5 @@ namespace WorldsHardestGameModel.MovementTypes
             currentPosition.X = (float)(centreOfRotation.X + distance * Math.Cos(angle));
             currentPosition.Y = (float)(centreOfRotation.Y + distance * Math.Sin(angle));
         }
-
-
-        public override void ChangeDirection()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

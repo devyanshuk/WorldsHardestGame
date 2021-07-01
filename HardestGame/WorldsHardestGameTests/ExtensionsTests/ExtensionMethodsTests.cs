@@ -49,7 +49,8 @@ namespace WorldsHardestGameTests.ExtensionsTests
             new object[] { new PointF(160, 200), new PointF(200, 200), new List<Dir_4> { Dir_4.RIGHT } },
             new object[] { new PointF(200, 260), new PointF(200, 200), new List<Dir_4> { Dir_4.UP } },
             new object[] { new PointF(167, 260), new PointF(200, 200), new List<Dir_4> { Dir_4.UP } },
-            new object[] { new PointF(230, 160), new PointF(200, 200), new List<Dir_4> { Dir_4.DOWN } }
+            new object[] { new PointF(230, 160), new PointF(200, 200), new List<Dir_4> { Dir_4.DOWN } },
+            new object[] { new PointF(1075, 205), new PointF(1020, 240), new List<Dir_4> { Dir_4.LEFT, Dir_4.DOWN } }
         };
 
 

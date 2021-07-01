@@ -58,6 +58,8 @@ namespace WorldsHardestGameModel.Game
 
             CheckObstacleWallCollision();
 
+            CheckPlayerObstacleCollision();
+
             foreach(var obstacle in gameEnvironment.obstacles)
             {
                 obstacle.Move();

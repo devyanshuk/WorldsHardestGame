@@ -10,7 +10,7 @@ using WorldsHardestGameModel.MovementTypes;
 using WorldsHardestGameModel.ConfigTemplates;
 using WorldsHardestGameModel.DependencyRegistry;
 
-namespace WorldsHardestGameView
+namespace WorldsHardestGameView.MainGameForm
 {
     public partial class MainForm : Form
     {

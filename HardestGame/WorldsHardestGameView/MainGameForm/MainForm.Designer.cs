@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace WorldsHardestGameView
+namespace WorldsHardestGameView.MainGameForm
 {
     partial class MainForm
     {

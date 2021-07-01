@@ -117,7 +117,8 @@ namespace WorldsHardestGameView
                 using (var brush = new SolidBrush(Color.Black))
                 {
                     graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(150, 50));
-                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(900, 50));
+                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(1000, 50));
+                    graphics.DrawString($"COINS : {game.coinsCollected}", font, brush, new PointF(550, 50));
                 }
             }
         }

@@ -15,11 +15,13 @@ namespace WorldsHardestGameModel.Game
         private readonly IParser parser;
         private readonly ILocalSettings localSettings;
 
-        public IGameEnvironment gameEnvironment { get; set; }
+        public IGameEnvironment gameEnvironment { get; }
 
-        public int level { get; set; }
+        public int level { get; private set; }
 
-        public int fails { get; set; }
+        public int fails { get; private set; }
+
+        public int coinsCollected { get; private set; }
 
         public GameLogic(IParser parser,
                          ILocalSettings localSettings,
@@ -30,6 +32,8 @@ namespace WorldsHardestGameModel.Game
             this.gameEnvironment = gameEnvironment;
             this.level = 1;
             this.fails = 0;
+            this.coinsCollected = 0;
+
         }
 
         public void InitializeGameEnvironment()
@@ -37,6 +41,7 @@ namespace WorldsHardestGameModel.Game
             gameEnvironment.ClearAll();
             parser.ParseLevel(level, gameEnvironment);
             this.fails = 0;
+            this.coinsCollected = 0;
         }
 
         public void AdvanceNextLevle()

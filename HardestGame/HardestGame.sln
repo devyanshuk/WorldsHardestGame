@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldsHardestGameView", "WorldsHardestGameView\WorldsHardestGameView.csproj", "{7F797E5D-2547-4B31-A9B2-AFC8137CDCF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldsHardestGameView", "WorldsHardestGameView\WorldsHardestGameView.csproj", "{7F797E5D-2547-4B31-A9B2-AFC8137CDCF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldsHardestGameModel", "WorldsHardestGameModel\WorldsHardestGameModel.csproj", "{5DB2AAC0-3611-44F0-8893-1D63ABF01AE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldsHardestGameModel", "WorldsHardestGameModel\WorldsHardestGameModel.csproj", "{5DB2AAC0-3611-44F0-8893-1D63ABF01AE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldsHardestGameTests", "WorldsHardestGameTests\WorldsHardestGameTests.csproj", "{F02FB8B2-AED2-4292-898C-ECD14841E1EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5DB2AAC0-3611-44F0-8893-1D63ABF01AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB2AAC0-3611-44F0-8893-1D63ABF01AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB2AAC0-3611-44F0-8893-1D63ABF01AE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02FB8B2-AED2-4292-898C-ECD14841E1EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02FB8B2-AED2-4292-898C-ECD14841E1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02FB8B2-AED2-4292-898C-ECD14841E1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02FB8B2-AED2-4292-898C-ECD14841E1EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

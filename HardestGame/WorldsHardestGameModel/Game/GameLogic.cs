@@ -66,6 +66,19 @@ namespace WorldsHardestGameModel.Game
         }
 
 
+        public void CheckPlayerObstacleCollision()
+        {
+            foreach(var obstacle in gameEnvironment.obstacles)
+            {
+                if (obstacle.IsCollision(gameEnvironment.player))
+                {
+                    fails++;
+                    gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;
+                }
+            }
+        }
+
+
         public void CheckPlayerWallCollision()
         {
             var unmovableDirectionsDict = new Dictionary<Dir_4, bool>()

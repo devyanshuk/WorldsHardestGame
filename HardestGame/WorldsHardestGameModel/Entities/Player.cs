@@ -12,6 +12,8 @@ namespace WorldsHardestGameModel.Entities
 
         public const float velocity = 5.0F;
 
+        public readonly PointF initialTopLeftPosition;
+
         /// <summary>
         /// value for a key will be true if the user is
         /// pressing the key. Key will be false when the 
@@ -37,6 +39,7 @@ namespace WorldsHardestGameModel.Entities
             };
 
             blockedDirections = new Dictionary<Dir_4, bool>(keyPresses);
+            initialTopLeftPosition = topLeftPosition;
         }
 
         public void UpdatePosition()

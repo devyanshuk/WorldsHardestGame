@@ -5,7 +5,7 @@ namespace WorldsHardestGameModel.EntityBase
 {
     public class CircularEntity
     {
-        public const int RADIUS = 30;
+        public const int RADIUS = 15;
 
         public PointF centre;
 

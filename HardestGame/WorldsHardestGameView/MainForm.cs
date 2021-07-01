@@ -152,8 +152,8 @@ namespace WorldsHardestGameView
                 var rect = new Rectangle(
                         (int)obstacle.centre.X - GameEnvironment.CELL_WIDTH / 4 + XOffset,
                         (int)obstacle.centre.Y - GameEnvironment.CELL_HEIGHT / 4 + YOffset,
-                        Obstacle.RADIUS,
-                        Obstacle.RADIUS
+                        Obstacle.RADIUS * 2,
+                        Obstacle.RADIUS * 2
                     );
                 DrawFilledCircle(graphics, borderColor, rect);
 

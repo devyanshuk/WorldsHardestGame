@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using WorldsHardestGameModel.Entities;
 using WorldsHardestGameModel.EntityBase;
-using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
 
 namespace WorldsHardestGameModel.Extensions

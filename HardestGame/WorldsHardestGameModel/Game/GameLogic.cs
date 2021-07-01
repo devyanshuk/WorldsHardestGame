@@ -41,11 +41,7 @@ namespace WorldsHardestGameModel.Game
 
         public void AdvanceNextLevle()
         {
-            level = (level + 1) % 9;
-            if (level == 0)
-            {
-                level = 1;
-            }
+            level = 1 + level % 9;
             InitializeGameEnvironment();
         }
 

@@ -344,9 +344,9 @@ namespace WorldsHardestGameModel.Levels.Parser
                 var velocity = float.Parse(line[2]);
                 var x = float.Parse(line[3]);
                 var y = float.Parse(line[4]);
-                var width = float.Parse(line[5]);
-                var height = float.Parse(line[6]);
-                var topLeftPos = new PointF(x, y);
+                var width = float.Parse(line[5]) * GameEnvironment.CELL_WIDTH;
+                var height = float.Parse(line[6]) * GameEnvironment.CELL_HEIGHT;
+                var topLeftPos = new PointF(x * GameEnvironment.CELL_WIDTH, y * GameEnvironment.CELL_HEIGHT);
 
                 for (int i = 7; i < line.Length; i++)
                 {

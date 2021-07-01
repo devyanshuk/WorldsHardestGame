@@ -30,7 +30,7 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 1;
+            this.level = 8;
             this.fails = 0;
             this.coinsCollected = 0;
 
@@ -73,7 +73,7 @@ namespace WorldsHardestGameModel.Game
         {
             foreach(var obstacle in gameEnvironment.obstacles)
             {
-                if (obstacle.IsCollision(gameEnvironment.player))
+                if (gameEnvironment.player.IsCollision(obstacle))
                 {
                     fails++;
                     gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;

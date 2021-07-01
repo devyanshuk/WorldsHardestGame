@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 using WorldsHardestGameModel.EntityBase;
+using WorldsHardestGameModel.Environment;
 
 namespace WorldsHardestGameModel.MovementTypes
 {
     public class RectangularMovement : MovementTypeBase
     {
+        /// <summary>
+        /// For cloclwise movement, the direction changes from index 0 to 1.
+        /// Vice versa for anticlockwise.
+        /// </summary>
+        private readonly List<Dir_4> MOVEMENTS = new List<Dir_4>() { Dir_4.UP, Dir_4.RIGHT, Dir_4.DOWN, Dir_4.LEFT };
+
         private Dir_4 currentDir;
         private Dir_C movementType;
 
@@ -39,11 +47,17 @@ namespace WorldsHardestGameModel.MovementTypes
             currentPosition.Y += currentDir == Dir_4.UP ? -velocity :
                                  currentDir == Dir_4.DOWN ? velocity :
                                  0;
+
+            if (TimeToChangeDirection())
+            {
+                ChangeDirection();
+            }
         }
 
         public override void ChangeDirection()
         {
-            throw new NotImplementedException();
+            var index = movementType == Dir_C.ANTICLOCKWISE ? 3 : 1;
+            currentDir = MOVEMENTS[(MOVEMENTS.IndexOf(currentDir) + index) % 4];
         }
 
         private bool TimeToChangeDirection()
@@ -53,10 +67,14 @@ namespace WorldsHardestGameModel.MovementTypes
             var height = boundaryHeight;
             var width = boundaryWidth;
 
-            return (pos.X <= topLeftPos.X && pos.Y >= topLeftPos.Y + height) ||
-                   (pos.X <= topLeftPos.X && pos.Y <= topLeftPos.Y) ||
-                   (pos.X >= topLeftPos.X + width && pos.Y <= topLeftPos.Y) ||
-                   (pos.X >= topLeftPos.X + width && pos.Y >= topLeftPos.Y + height);
+            return ((pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2 + 1) &&
+                    pos.Y >= (topLeftPos.Y + (height - GameEnvironment.CELL_HEIGHT / 2)) ||
+                   (pos.X <= (topLeftPos.X + GameEnvironment.CELL_WIDTH / 2 + 1) &&
+                    pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2 + 1)) ||
+                   (pos.X >= topLeftPos.X + (width - GameEnvironment.CELL_WIDTH / 2) &&
+                   pos.Y <= (topLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2 + 1)) ||
+                   (pos.X >= topLeftPos.X + (width - GameEnvironment.CELL_WIDTH / 2) &&
+                   pos.Y >= topLeftPos.Y + height - GameEnvironment.CELL_HEIGHT / 2)));
         }
 
 

@@ -27,6 +27,15 @@ namespace WorldsHardestGameModel.Extensions
         }
 
 
+        public static bool IsCollision(this RectangularEntity rect, CircularEntity circ)
+        {
+            return rect.IsCollision(new PointF(circ.centre.X - CircularEntity.RADIUS, circ.centre.Y)) ||
+                   rect.IsCollision(new PointF(circ.centre.X + CircularEntity.RADIUS, circ.centre.Y)) ||
+                   rect.IsCollision(new PointF(circ.centre.X - CircularEntity.RADIUS, circ.centre.Y - CircularEntity.RADIUS)) ||
+                   rect.IsCollision(new PointF(circ.centre.X + CircularEntity.RADIUS, circ.centre.Y + CircularEntity.RADIUS));
+        }
+
+
         /// <summary>
         /// Given one of the coordinates of player and wall, and width/height of the wall, check if
         /// player lies within the range.

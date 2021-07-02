@@ -342,11 +342,11 @@ namespace WorldsHardestGameModel.Levels.Parser
             {
                 var dir = line[1] == ClockwiseMovementIdentifier ? Dir_C.CLOCKWISE : Dir_C.ANTICLOCKWISE;
                 var velocity = float.Parse(line[2]);
-                var x = float.Parse(line[3]);
-                var y = float.Parse(line[4]);
+                var x = float.Parse(line[3]) * GameEnvironment.CELL_WIDTH;
+                var y = float.Parse(line[4]) * GameEnvironment.CELL_HEIGHT;
                 var width = float.Parse(line[5]) * GameEnvironment.CELL_WIDTH;
                 var height = float.Parse(line[6]) * GameEnvironment.CELL_HEIGHT;
-                var topLeftPos = new PointF(x * GameEnvironment.CELL_WIDTH, y * GameEnvironment.CELL_HEIGHT);
+                var topLeftPos = new PointF(x, y);
 
                 for (int i = 7; i < line.Length; i++)
                 {
@@ -446,7 +446,7 @@ namespace WorldsHardestGameModel.Levels.Parser
                             (
                                 newPos,
                                 velocity,
-                                new RectangularMovement(velocity, newPos, Dir_4.DOWN, direction, topLeftPos, width, height)
+                                new RectangularMovement(velocity, newPos, direction, topLeftPos, width, height)
                            )
                       );
 
@@ -456,7 +456,7 @@ namespace WorldsHardestGameModel.Levels.Parser
                             (
                                 n,
                                 velocity,
-                                new RectangularMovement(velocity, n, Dir_4.DOWN, direction, topLeftPos, width, height)
+                                new RectangularMovement(velocity, n, direction, topLeftPos, width, height)
                            )
                       );
             }

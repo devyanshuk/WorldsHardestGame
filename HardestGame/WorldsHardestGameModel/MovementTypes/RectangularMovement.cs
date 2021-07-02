@@ -24,18 +24,18 @@ namespace WorldsHardestGameModel.MovementTypes
 
         public RectangularMovement(float velocity,
                                    PointF currentPosition,
-                                   Dir_4 currentDir,
                                    Dir_C movementType,
                                    PointF boundaryTopLeftPos,
                                    float boundaryWidth,
                                    float boundaryHeight)
                                  : base(velocity, currentPosition)
         {
-            this.currentDir = currentDir;
             this.movementType = movementType;
             this.boundaryTopLeftPos = boundaryTopLeftPos;
             this.boundaryWidth = boundaryWidth;
             this.boundaryHeight = boundaryHeight;
+
+            currentDir = EvaluateInitialDirBasedOnLocation();
         }
 
         public override void Move()
@@ -78,6 +78,42 @@ namespace WorldsHardestGameModel.MovementTypes
 
                    (pos.X >= (topLeftPos.X + width - GameEnvironment.CELL_WIDTH / 2) &&
                    pos.Y >= (topLeftPos.Y + height - GameEnvironment.CELL_HEIGHT / 2));
+        }
+
+
+        private Dir_4 EvaluateInitialDirBasedOnLocation()
+        {
+            var left = Dir_4.LEFT;
+            var right = Dir_4.RIGHT;
+            var up = Dir_4.UP;
+            var down = Dir_4.DOWN;
+
+
+            var boundary = new PointF(boundaryTopLeftPos.X + GameEnvironment.CELL_WIDTH / 2, boundaryTopLeftPos.Y + GameEnvironment.CELL_HEIGHT / 2);
+
+            if (boundary.X == currentPosition.X)
+            {
+                if (boundary.Y == currentPosition.Y)
+                    return movementType == Dir_C.CLOCKWISE ? right : down;
+                if (boundary.Y + boundaryHeight - GameEnvironment.CELL_HEIGHT == currentPosition.Y)
+                    return movementType == Dir_C.CLOCKWISE ? up : right;
+                return movementType == Dir_C.CLOCKWISE ? up : down;
+            }
+            if (boundary.Y == currentPosition.Y)
+            {
+                if (boundary.X + boundaryWidth - GameEnvironment.CELL_WIDTH == currentPosition.X)
+                    return movementType == Dir_C.CLOCKWISE ? down : left;
+                return movementType == Dir_C.CLOCKWISE ? right : left;
+            }
+            if (boundary.X + boundaryWidth - GameEnvironment.CELL_WIDTH == currentPosition.X)
+            {
+                if (boundary.Y + boundaryHeight - GameEnvironment.CELL_HEIGHT == currentPosition.Y)
+                    return movementType == Dir_C.CLOCKWISE ? left : up;
+                return movementType == Dir_C.CLOCKWISE ? down : up;
+            }
+            if (boundary.Y + boundaryHeight - GameEnvironment.CELL_HEIGHT == currentPosition.Y)
+                return movementType == Dir_C.CLOCKWISE ? left : right;
+            return left;
         }
 
 

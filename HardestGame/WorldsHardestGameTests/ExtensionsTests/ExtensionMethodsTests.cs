@@ -33,12 +33,10 @@ namespace WorldsHardestGameTests.ExtensionsTests
             var rectangularEntity = new RectangularEntity(rectWidth, rectHeight, new PointF(rectangleTlpX, rectangleTlpY));
 
             //Act
-            var result = circularEntity.IsCollision(rectangularEntity);
-            var result2 = rectangularEntity.IsCollision(circularEntity);
+            var result = circularEntity.IsCollision(rectangularEntity) || rectangularEntity.IsCollision(circularEntity);
 
             //Assert
             Assert.AreEqual(result, expected);
-            Assert.AreEqual(result2, expected);
         }
 
 

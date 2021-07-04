@@ -97,7 +97,7 @@ namespace WorldsHardestGameModel.Game
                     {
                         numberOfCoinsSinceLastCheckpointSave = 0;
                         collectedCoins.Clear();
-                        onPlayerInsideCheckpointWithCoins?.Invoke(this, null);
+                        onPlayerInsideCheckpointWithCoins?.Invoke(checkpoint, null);
                     }
                     return;
                 }
@@ -161,6 +161,7 @@ namespace WorldsHardestGameModel.Game
                 {
                     gameEnvironment.coins.Add(collectedCoin);
                 }
+                numberOfCoinsSinceLastCheckpointSave = 0;
                 collectedCoins.Clear();
             }
         }

@@ -27,7 +27,6 @@ namespace WorldsHardestGameView.MainGameForm
         private readonly IGameLogic game;
         private readonly ILocalSettings localSettings;
         private readonly SoundPlayer backgroundMusic;
-        private readonly PictureBox coinImage;
         private readonly Bitmap coinImageBitmap;
 
         #region entity colors
@@ -35,22 +34,37 @@ namespace WorldsHardestGameView.MainGameForm
         private Color playerColor = Color.Red;
         private Color obstacleColor = Color.Blue;
         private Color borderColor = Color.Black;
-        private Color checkpointColor = Color.FromArgb(100, 0, 255, 0);
+        private Color checkpointColor = Color.Green;
+        private int checkpointOpacity = 150;
         private Color filledSquareColor = Color.DarkOliveGreen;
 
         #endregion
 
-        
+
+        #region player animation
+
         private bool playerDead = false;
         private int playerDeathAnimationOpacity = 255;
         private int playerDeathAnimationVelocity = -20;
 
+        #endregion
+
+
+        #region checkpoint animation
+
+        private CheckPoint animatedCheckpoint;
+        private int checkpointAnimationOpacity;
+        private int checkpointAnimationVelocity = 10;
+
+        #endregion
 
 
 
         public MainForm()
         {
             GameLogic.onPlayerDeath += OnPlayerDeath;
+            GameLogic.onPlayerInsideCheckpointWithCoins += CheckpointAnimation;
+            checkpointAnimationOpacity = checkpointOpacity;
             container = new WindsorContainer().Install(new DependencyInstaller());
             game = container.Resolve<IGameLogic>();
             localSettings = container.Resolve<ILocalSettings>();
@@ -217,7 +231,26 @@ namespace WorldsHardestGameView.MainGameForm
                         (int)checkpoint.width,
                         (int)checkpoint.height
                     );
-                DrawFilledSquare(graphics, checkpointColor, rect);
+
+                var opacity = checkpointOpacity;
+                if (animatedCheckpoint == checkpoint)
+                {
+                    opacity = checkpointAnimationOpacity;
+                    checkpointAnimationOpacity += checkpointAnimationVelocity;
+                    if (checkpointAnimationOpacity >= 255)
+                    {
+                        checkpointAnimationVelocity = -Math.Abs(checkpointAnimationVelocity);
+                        checkpointAnimationOpacity = 255;
+                    }
+                    else if (checkpointAnimationOpacity <= checkpointOpacity)
+                    {
+                        checkpointAnimationVelocity = Math.Abs(checkpointAnimationVelocity);
+                        checkpointAnimationOpacity = checkpointOpacity;
+                        animatedCheckpoint = null;
+                    }
+                }
+                var color = Color.FromArgb(opacity, checkpointColor);
+                DrawFilledSquare(graphics, color, rect);
 
             }
         }
@@ -286,6 +319,12 @@ namespace WorldsHardestGameView.MainGameForm
         public void OnPlayerDeath(object sender, EventArgs e)
         {
             playerDead = true;
+        }
+
+
+        public void CheckpointAnimation(object sender, EventArgs e)
+        {
+            animatedCheckpoint = sender as CheckPoint;
         }
 
 

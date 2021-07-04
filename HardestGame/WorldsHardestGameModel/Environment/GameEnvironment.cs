@@ -24,7 +24,7 @@ namespace WorldsHardestGameModel.Environment
         /// </summary>
         public List<Wall> obstacleBoundaries { get; set; } 
         public int numberOfCoins { get; set; }
-        public List<Coin> coins { get; set; }
+        public HashSet<Coin> coins { get; set; }
         public List<CheckPoint> checkPoints { get; set; }
         public bool[,] freeSpaces { get; set; }
 
@@ -35,7 +35,7 @@ namespace WorldsHardestGameModel.Environment
             obstacles = new List<Obstacle>();
             obstacleBoundaries = new List<Wall>();
             numberOfCoins = 0;
-            coins = new List<Coin>();
+            coins = new HashSet<Coin>();
             checkPoints = new List<CheckPoint>();
             freeSpaces = new bool[localSettings.MapHeight, localSettings.MapWidth];
         }

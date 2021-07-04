@@ -29,11 +29,21 @@ namespace WorldsHardestGameModel.Extensions
 
         public static bool IsCollision(this RectangularEntity rect, CircularEntity circ)
         {
-            return rect.IsCollision(new PointF(circ.centre.X - CircularEntity.RADIUS, circ.centre.Y)) ||
-                   rect.IsCollision(new PointF(circ.centre.X + CircularEntity.RADIUS, circ.centre.Y)) ||
-                   rect.IsCollision(new PointF(circ.centre.X - CircularEntity.RADIUS, circ.centre.Y - CircularEntity.RADIUS)) ||
-                   rect.IsCollision(new PointF(circ.centre.X + CircularEntity.RADIUS, circ.centre.Y + CircularEntity.RADIUS));
+            return rect.IsCollision(new PointF(circ.centre.X - CircularEntity.RADIUS + 1, circ.centre.Y)) ||
+                   rect.IsCollision(new PointF(circ.centre.X + CircularEntity.RADIUS - 1, circ.centre.Y)) ||
+                   rect.IsCollision(new PointF(circ.centre.X, circ.centre.Y - CircularEntity.RADIUS + 1)) ||
+                   rect.IsCollision(new PointF(circ.centre.X, circ.centre.Y + CircularEntity.RADIUS - 1));
         }
+
+
+        public static bool IsCollision(this RectangularEntity rect1, RectangularEntity rect2)
+        {
+            return rect1.IsCollision(rect2.topLeftPosition) ||
+                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X + rect2.width, rect2.topLeftPosition.Y)) ||
+                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X, rect2.topLeftPosition.Y + rect2.height)) ||
+                   rect1.IsCollision(new PointF(rect2.topLeftPosition.X + rect2.width, rect2.topLeftPosition.Y + rect2.height));
+        }
+
 
 
         /// <summary>

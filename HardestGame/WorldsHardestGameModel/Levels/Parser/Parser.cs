@@ -185,9 +185,9 @@ namespace WorldsHardestGameModel.Levels.Parser
                                         (
                                             new Obstacle
                                             (
-                                                adjustedPos,
-                                                xVelocity,
-                                                new XYMovement(xVelocity, adjustedPos, Dir_4.LEFT)
+                                                centre : adjustedPos,
+                                                velocity : xVelocity,
+                                                movement : new XYMovement(xVelocity, adjustedPos, Dir_4.LEFT)
                                             )
 
                                         );
@@ -200,9 +200,9 @@ namespace WorldsHardestGameModel.Levels.Parser
                                         (
                                             new Obstacle
                                             (
-                                                adjustedPos,
-                                                yVelocity,
-                                                new XYMovement(yVelocity, adjustedPos, Dir_4.DOWN)
+                                                centre : adjustedPos,
+                                                velocity : yVelocity,
+                                                movement : new XYMovement(yVelocity, adjustedPos, Dir_4.DOWN)
                                             )
 
                                         );

@@ -16,7 +16,7 @@ namespace WorldsHardestGameModel.Environment
 
         int numberOfCoins { get; set; }
 
-        List<Coin> coins { get; set; }
+        HashSet<Coin> coins { get; set; }
 
         List<CheckPoint> checkPoints { get; set; }
 

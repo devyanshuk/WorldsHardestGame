@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using WorldsHardestGameModel.Entities;
 using WorldsHardestGameModel.Extensions;
 using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
@@ -15,14 +16,21 @@ namespace WorldsHardestGameModel.Game
         private readonly ILocalSettings localSettings;
 
         public static EventHandler onPlayerDeath;
+        public static EventHandler onPlayerInsideCheckpointWithCoins;
 
         public IGameEnvironment gameEnvironment { get; }
+
 
         public int level { get; private set; }
 
         public int fails { get; private set; }
 
+        private bool insideCheckpoint;
+
         public int coinsCollected { get; private set; }
+
+        private int numberOfCoinsSinceLastCheckpointSave;
+        private HashSet<Coin> collectedCoins;
 
         public GameLogic(IParser parser,
                          ILocalSettings localSettings,
@@ -31,21 +39,24 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 8;
+            this.level = 1;
             this.fails = 0;
             this.coinsCollected = 0;
+            insideCheckpoint = false;
+            collectedCoins = new HashSet<Coin>();
 
         }
 
         public void InitializeGameEnvironment()
         {
             gameEnvironment.ClearAll();
+            parser.ClearAll();
             parser.ParseLevel(level, gameEnvironment);
             this.fails = 0;
             this.coinsCollected = 0;
         }
 
-        public void AdvanceNextLevle()
+        public void AdvanceNextLevel()
         {
             level = 1 + level % 9;
             InitializeGameEnvironment();
@@ -53,29 +64,76 @@ namespace WorldsHardestGameModel.Game
 
         public void UpdateEntityStates()
         {
-
             gameEnvironment.player.UpdatePosition();
-
             CheckPlayerWallCollision();
-
-            CheckPlayerObstacleCollision();
-
+            CheckPlayerCheckpointCollision();
+            CheckPlayerCoinCollision();
+            CheckPlayerObstacleAndObstacleWallCollision();
             foreach(var obstacle in gameEnvironment.obstacles)
             {
                 obstacle.Move();
             }
-
+            CheckGameProgress();
         }
 
 
-        public void CheckPlayerObstacleCollision()
+        private void CheckGameProgress()
+        {
+            if (insideCheckpoint && coinsCollected == gameEnvironment.numberOfCoins)
+            {
+                AdvanceNextLevel();
+            }
+        }
+
+
+        private void CheckPlayerCheckpointCollision()
+        {
+            foreach(var checkpoint in gameEnvironment.checkPoints)
+            {
+                if (checkpoint.IsCollision(gameEnvironment.player))
+                {
+                    insideCheckpoint = true;
+                    if (numberOfCoinsSinceLastCheckpointSave > 0)
+                    {
+                        numberOfCoinsSinceLastCheckpointSave = 0;
+                        collectedCoins.Clear();
+                        onPlayerInsideCheckpointWithCoins?.Invoke(this, null);
+                    }
+                    return;
+                }
+            }
+            insideCheckpoint = false;
+        }
+
+
+        private void CheckPlayerCoinCollision()
+        {
+            foreach(var coin in gameEnvironment.coins)
+            {
+                if (gameEnvironment.player.IsCollision(coin))
+                {
+                    coinsCollected++;
+                    numberOfCoinsSinceLastCheckpointSave++;
+                    collectedCoins.Add(coin);
+                }
+            }
+
+            foreach (var collectedCoin in collectedCoins)
+            {
+                gameEnvironment.coins.Remove(collectedCoin);
+            }
+        }
+
+
+        private void CheckPlayerObstacleAndObstacleWallCollision()
         {
             foreach(var obstacle in gameEnvironment.obstacles)
             {
                 // Player-Obstacle collision
-                if (gameEnvironment.player.IsCollision(obstacle))
+                if (!insideCheckpoint && gameEnvironment.player.IsCollision(obstacle))
                 {
                     fails++;
+                    RemoveAllUnsavedCollectedCoins();
                     onPlayerDeath?.Invoke(this, null);
                 }
 
@@ -94,7 +152,21 @@ namespace WorldsHardestGameModel.Game
         }
 
 
-        public void CheckPlayerWallCollision()
+        private void RemoveAllUnsavedCollectedCoins()
+        {
+            if (numberOfCoinsSinceLastCheckpointSave > 0)
+            {
+                coinsCollected -= numberOfCoinsSinceLastCheckpointSave;
+                foreach (var collectedCoin in collectedCoins)
+                {
+                    gameEnvironment.coins.Add(collectedCoin);
+                }
+                collectedCoins.Clear();
+            }
+        }
+
+
+        private void CheckPlayerWallCollision()
         {
             var unmovableDirectionsDict = new Dictionary<Dir_4, bool>()
             {

@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Media;
 using System.Drawing;
 using Castle.Windsor;
 using System.Windows.Forms;
 
 using WorldsHardestGameModel.Game;
 using WorldsHardestGameModel.Entities;
+using WorldsHardestGameModel.EntityBase;
 using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
 using WorldsHardestGameModel.ConfigTemplates;
 using WorldsHardestGameModel.DependencyRegistry;
+
+using WorldsHardestGameView.ConfigTempates;
+
+using Color = System.Drawing.Color;
 
 namespace WorldsHardestGameView.MainGameForm
 {
@@ -20,7 +26,9 @@ namespace WorldsHardestGameView.MainGameForm
         private readonly IWindsorContainer container;
         private readonly IGameLogic game;
         private readonly ILocalSettings localSettings;
-
+        private readonly SoundPlayer backgroundMusic;
+        private readonly PictureBox coinImage;
+        private readonly Bitmap coinImageBitmap;
 
         #region entity colors
 
@@ -39,6 +47,7 @@ namespace WorldsHardestGameView.MainGameForm
 
 
 
+
         public MainForm()
         {
             GameLogic.onPlayerDeath += OnPlayerDeath;
@@ -48,6 +57,9 @@ namespace WorldsHardestGameView.MainGameForm
             InitializeComponent();
             BackColor = Color.Chocolate;
             game.InitializeGameEnvironment();
+            coinImageBitmap = new Bitmap(FilePaths.CoinImagePath);
+            backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
+            backgroundMusic.PlayLooping();
             updateTimer.Start();
         }
 
@@ -80,6 +92,7 @@ namespace WorldsHardestGameView.MainGameForm
             using (var graphics = e.Graphics)
             {
                 DrawGameBackGround(graphics);
+                DrawCoins(graphics);
                 DrawCheckpoints(graphics);
                 DrawPlayer(graphics);
                 DrawObstacles(graphics);
@@ -112,6 +125,17 @@ namespace WorldsHardestGameView.MainGameForm
                         DrawFilledSquare(graphics, color, rectangle);
                     }
                 }
+            }
+        }
+
+
+        private void DrawCoins(Graphics graphics)
+        {
+            foreach(var coin in game.gameEnvironment.coins)
+            {
+                graphics.DrawImage(coinImageBitmap, new Point((int)coin.centre.X - GameEnvironment.CELL_WIDTH / 4 + XOffset,
+                                                              (int)coin.centre.Y - GameEnvironment.CELL_HEIGHT / 4 + YOffset));
+
             }
         }
 

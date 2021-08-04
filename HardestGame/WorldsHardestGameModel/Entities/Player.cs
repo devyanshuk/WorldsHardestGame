@@ -27,6 +27,8 @@ namespace WorldsHardestGameModel.Entities
         /// </summary>
         public Dictionary<Dir_4, bool> blockedDirections;
 
+        public bool isMoving =  false;
+
         public Player(PointF topLeftPosition)
                      : base(width, height, topLeftPosition)
         {
@@ -51,6 +53,8 @@ namespace WorldsHardestGameModel.Entities
             var dy = keyPresses[Dir_4.UP] && !blockedDirections[Dir_4.UP] ? -1 :
                      keyPresses[Dir_4.DOWN] && !blockedDirections[Dir_4.DOWN] ? 1 :
                      0;
+
+            isMoving = dx != 0 || dy != 0;
 
             topLeftPosition.X += dx * velocity;
             topLeftPosition.Y += dy * velocity;

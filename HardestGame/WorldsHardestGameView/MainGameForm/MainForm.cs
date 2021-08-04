@@ -21,7 +21,7 @@ namespace WorldsHardestGameView.MainGameForm
 {
     public partial class MainForm : Form
     {
-        private const int XOffset = 100;
+        private const int XOffset = 40;
         private const int YOffset = 40;
 
         private readonly IWindsorContainer container;
@@ -34,9 +34,9 @@ namespace WorldsHardestGameView.MainGameForm
 
         #region level description
 
-        private bool displayingLevelDescription;
+        private bool displayingLevelDescription = true;
         private int levelDescriptionOpacity = 255;
-        private int levelDescriptionOpacityVelocity = -10;
+        private int levelDescriptionOpacityVelocity = -5;
 
         #endregion
 
@@ -55,6 +55,7 @@ namespace WorldsHardestGameView.MainGameForm
 
         #region player animation
 
+        private bool playerAdvancedToNextLevel = false;
         private bool playerDead = false;
         private int playerDeathAnimationOpacity = 255;
         private int playerDeathAnimationVelocity = -20;
@@ -82,15 +83,15 @@ namespace WorldsHardestGameView.MainGameForm
             game = container.Resolve<IGameLogic>();
             localSettings = container.Resolve<ILocalSettings>();
             InitializeComponent();
-            SetStyle(ControlStyles.AllPaintingInWmPaint
-                    | ControlStyles.UserPaint
-                    | ControlStyles.DoubleBuffer, true);
+            SetStyle(flag : ControlStyles.AllPaintingInWmPaint
+                            | ControlStyles.UserPaint
+                            | ControlStyles.DoubleBuffer,
+                     value : true);
             BackColor = Color.Chocolate;
             coinImageBitmap = new Bitmap(FilePaths.CoinImagePath);
             backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
             backgroundMusic.PlayLooping();
             levelDescriptions = JsonConvert.DeserializeObject<LevelMessageRoot>(File.ReadAllText(FilePaths.LevelMessageJson));
-            displayingLevelDescription = true;
             updateTimer.Start();
         }
 
@@ -110,9 +111,9 @@ namespace WorldsHardestGameView.MainGameForm
         {
             using (var font = new Font("Arial", 40))
             {
-                using (var brush = new SolidBrush(Color.FromArgb(levelDescriptionOpacity, Color.Black)))
+                using (var brush = new SolidBrush(Color.FromArgb(levelDescriptionOpacity, Color.Blue)))
                 {
-                    graphics.DrawString(levelDescriptions.levelMessages[game.level], font, brush, new PointF(550, 50));
+                    graphics.DrawString(levelDescriptions.levelMessages[game.level], font, brush, new PointF(200, 360));
                 }
             }
         }
@@ -308,14 +309,23 @@ namespace WorldsHardestGameView.MainGameForm
             {
                 game.UpdateEntityStates();
             }
-            else if (playerDead)
+            if (playerDead || playerAdvancedToNextLevel)
             {
                 playerDeathAnimationOpacity += playerDeathAnimationVelocity;
                 if (playerDeathAnimationOpacity <= 0)
                 {
+                    if (playerDead)
+                    {
+                        game.OnFail();
+                    }
+                    else
+                    {
+                        displayingLevelDescription = true;
+                    }
                     playerDead = false;
+                    playerAdvancedToNextLevel = false;
                     playerDeathAnimationOpacity = 255;
-                    game.OnFail();
+                    
                 }
             }
             else if (displayingLevelDescription)
@@ -361,7 +371,8 @@ namespace WorldsHardestGameView.MainGameForm
 
         public void OnLevelAdvance(object sender, EventArgs e)
         {
-            displayingLevelDescription = true;
+            playerAdvancedToNextLevel = true;
+            //displayingLevelDescription = true;
         }
 
 

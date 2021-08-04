@@ -40,9 +40,9 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 0;
-            this.fails = 0;
-            this.coinsCollected = 0;
+            level = 0;
+            fails = 0;
+            coinsCollected = 0;
             insideCheckpoint = false;
             collectedCoins = new HashSet<Coin>();
 
@@ -53,8 +53,8 @@ namespace WorldsHardestGameModel.Game
             gameEnvironment.ClearAll();
             parser.ClearAll();
             parser.ParseLevel(level, gameEnvironment);
-            this.fails = 0;
-            this.coinsCollected = 0;
+            fails = 0;
+            coinsCollected = 0;
         }
 
         public void AdvanceNextLevel()
@@ -89,21 +89,24 @@ namespace WorldsHardestGameModel.Game
 
         private void CheckPlayerCheckpointCollision()
         {
-            foreach(var checkpoint in gameEnvironment.checkPoints)
+            if (gameEnvironment.player.isMoving)
             {
-                if (checkpoint.IsCollision(gameEnvironment.player))
+                foreach (var checkpoint in gameEnvironment.checkPoints)
                 {
-                    insideCheckpoint = true;
-                    if (numberOfCoinsSinceLastCheckpointSave > 0)
+                    if (checkpoint.IsCollision(gameEnvironment.player))
                     {
-                        numberOfCoinsSinceLastCheckpointSave = 0;
-                        collectedCoins.Clear();
-                        onPlayerInsideCheckpointWithCoins?.Invoke(checkpoint, null);
+                        insideCheckpoint = true;
+                        if (numberOfCoinsSinceLastCheckpointSave > 0)
+                        {
+                            numberOfCoinsSinceLastCheckpointSave = 0;
+                            collectedCoins.Clear();
+                            onPlayerInsideCheckpointWithCoins?.Invoke(checkpoint, null);
+                        }
+                        return;
                     }
-                    return;
                 }
+                insideCheckpoint = false;
             }
-            insideCheckpoint = false;
         }
 
 
@@ -170,7 +173,9 @@ namespace WorldsHardestGameModel.Game
 
         private void CheckPlayerWallCollision()
         {
-            var unmovableDirectionsDict = new Dictionary<Dir_4, bool>()
+            if (gameEnvironment.player.isMoving)
+            {
+                var unmovableDirectionsDict = new Dictionary<Dir_4, bool>()
             {
                 { Dir_4.UP, false },
                 { Dir_4.DOWN, false },
@@ -179,19 +184,20 @@ namespace WorldsHardestGameModel.Game
             };
 
 
-            foreach (var wall in gameEnvironment.walls)
-            {
-                var unmovableDirections = gameEnvironment.player.CheckCollision(wall);
-                if (unmovableDirections.Count > 0)
+                foreach (var wall in gameEnvironment.walls)
                 {
-                    foreach (var unmovableDirection in unmovableDirections)
+                    var unmovableDirections = gameEnvironment.player.CheckCollision(wall);
+                    if (unmovableDirections.Count > 0)
                     {
-                        unmovableDirectionsDict[unmovableDirection] = true;
+                        foreach (var unmovableDirection in unmovableDirections)
+                        {
+                            unmovableDirectionsDict[unmovableDirection] = true;
+                        }
                     }
-                }
 
+                }
+                gameEnvironment.player.RegisterUnmovableDirections(unmovableDirectionsDict);
             }
-            gameEnvironment.player.RegisterUnmovableDirections(unmovableDirectionsDict);
         }
 
 

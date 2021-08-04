@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 using WorldsHardestGameModel.Game;
 using WorldsHardestGameModel.Entities;
-using WorldsHardestGameModel.EntityBase;
 using WorldsHardestGameModel.Environment;
 using WorldsHardestGameModel.MovementTypes;
 using WorldsHardestGameModel.ConfigTemplates;
@@ -28,6 +27,7 @@ namespace WorldsHardestGameView.MainGameForm
         private readonly ILocalSettings localSettings;
         private readonly SoundPlayer backgroundMusic;
         private readonly Bitmap coinImageBitmap;
+
 
         #region entity colors
 
@@ -69,25 +69,16 @@ namespace WorldsHardestGameView.MainGameForm
             game = container.Resolve<IGameLogic>();
             localSettings = container.Resolve<ILocalSettings>();
             InitializeComponent();
+            SetStyle(ControlStyles.AllPaintingInWmPaint
+                    | ControlStyles.UserPaint
+                    | ControlStyles.DoubleBuffer, true);
             BackColor = Color.Chocolate;
             game.InitializeGameEnvironment();
             coinImageBitmap = new Bitmap(FilePaths.CoinImagePath);
-            backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
-            backgroundMusic.PlayLooping();
+            //backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
+            //backgroundMusic.PlayLooping();
             updateTimer.Start();
         }
-
-        /**/
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var handleParam = base.CreateParams;
-                handleParam.ExStyle |= 0x02000000;
-                return handleParam;
-            }
-        }
-        /**/
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -103,19 +94,17 @@ namespace WorldsHardestGameView.MainGameForm
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            using (var graphics = e.Graphics)
-            {
-                DrawGameBackGround(graphics);
-                DrawCoins(graphics);
-                DrawCheckpoints(graphics);
-                DrawPlayer(graphics);
-                DrawObstacles(graphics);
+            var graphics = e.Graphics;
+            DrawGameBackGround(graphics);
+            DrawCoins(graphics);
+            DrawCheckpoints(graphics);
+            DrawPlayer(graphics);
+            DrawObstacles(graphics);
 #if DEBUG_MAIN_FORM
-                DrawWallBoundariesForXYObstacles(graphics);
+            DrawWallBoundariesForXYObstacles(graphics);
 #endif
-                DisplayScoreAndFails(graphics);
+             DisplayScoreAndFails(graphics);
 
-            }
         }
 
         private void DrawGameBackGround(Graphics graphics)

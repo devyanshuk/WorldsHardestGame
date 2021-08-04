@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Music\backgroundmusic.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="5.1.1" />
     <PackageReference Include="EPP.PresentationCore" Version="1.0.0" />
   </ItemGroup>
@@ -17,6 +21,9 @@
 
   <ItemGroup>
     <None Update="Images\Coin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Music\backgroundmusic.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

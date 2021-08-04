@@ -109,11 +109,20 @@ namespace WorldsHardestGameView.MainGameForm
 
         private void DisplayLevelMessage(Graphics graphics)
         {
-            using (var font = new Font("Arial", 40))
+            var fontSize = 40;
+            using (var font = new Font("Arial", fontSize))
             {
+                var stringFormat = new StringFormat();
+                stringFormat.LineAlignment = StringAlignment.Center;
+                stringFormat.Alignment = StringAlignment.Center;
+
                 using (var brush = new SolidBrush(Color.FromArgb(levelDescriptionOpacity, Color.Blue)))
                 {
-                    graphics.DrawString(levelDescriptions.levelMessages[game.level], font, brush, new PointF(200, 360));
+                    graphics.DrawString (s : levelDescriptions.levelMessages[game.level],
+                                        font : font,
+                                        brush : brush,
+                                        layoutRectangle : new RectangleF(0, screenHeight / 2 - fontSize , screenWidth, fontSize + 20),
+                                        format : stringFormat);
                 }
             }
         }
@@ -179,13 +188,15 @@ namespace WorldsHardestGameView.MainGameForm
 
         private void DisplayScoreAndFails(Graphics graphics)
         {
-            using (var font = new Font("Arial", 40))
+            var fontSize = 30;
+            DrawFilledSquare(graphics, Color.Black, new Rectangle(0, 0, screenWidth, fontSize + 20));
+            using (var font = new Font("Arial", fontSize))
             {
-                using (var brush = new SolidBrush(Color.Black))
+                using (var brush = new SolidBrush(Color.White))
                 {
-                    graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(150, 50));
-                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(1000, 50));
-                    graphics.DrawString($"COINS : {game.coinsCollected}", font, brush, new PointF(550, 50));
+                    graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(150, 5));
+                    graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(1080, 5));
+                    graphics.DrawString($"COINS : {game.coinsCollected}", font, brush, new PointF(600, 5));
                 }
             }
         }
@@ -372,7 +383,6 @@ namespace WorldsHardestGameView.MainGameForm
         public void OnLevelAdvance(object sender, EventArgs e)
         {
             playerAdvancedToNextLevel = true;
-            //displayingLevelDescription = true;
         }
 
 

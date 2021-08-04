@@ -426,9 +426,9 @@ namespace WorldsHardestGameModel.Levels.Parser
             {
                 result.Add(new Obstacle
                             (
-                                new PointF(x, y),
-                                velocity,
-                                new CircularMovement(velocity, n, centreOfRotation, direction))
+                                centre : new PointF(x, y),
+                                velocity : velocity,
+                                movement : new CircularMovement(velocity, n, centreOfRotation, direction))
                             );
 
             }
@@ -444,9 +444,9 @@ namespace WorldsHardestGameModel.Levels.Parser
 
             result.Add(new Obstacle
                             (
-                                newPos,
-                                velocity,
-                                new RectangularMovement(velocity, newPos, direction, topLeftPos, width, height)
+                                centre : newPos,
+                                velocity : velocity,
+                                movement : new RectangularMovement(velocity, newPos, direction, topLeftPos, width, height)
                            )
                       );
 
@@ -454,9 +454,9 @@ namespace WorldsHardestGameModel.Levels.Parser
             {
                 result.Add(new Obstacle
                             (
-                                n,
-                                velocity,
-                                new RectangularMovement(velocity, n, direction, topLeftPos, width, height)
+                                centre : n,
+                                velocity : velocity,
+                                movement : new RectangularMovement(velocity, n, direction, topLeftPos, width, height)
                            )
                       );
             }

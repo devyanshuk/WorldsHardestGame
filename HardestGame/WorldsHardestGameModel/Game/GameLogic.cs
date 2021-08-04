@@ -17,6 +17,7 @@ namespace WorldsHardestGameModel.Game
 
         public static EventHandler onPlayerDeath;
         public static EventHandler onPlayerInsideCheckpointWithCoins;
+        public static EventHandler onLevelAdvance;
 
         public IGameEnvironment gameEnvironment { get; }
 
@@ -39,7 +40,7 @@ namespace WorldsHardestGameModel.Game
             this.parser = parser;
             this.localSettings = localSettings;
             this.gameEnvironment = gameEnvironment;
-            this.level = 1;
+            this.level = 0;
             this.fails = 0;
             this.coinsCollected = 0;
             insideCheckpoint = false;
@@ -81,7 +82,7 @@ namespace WorldsHardestGameModel.Game
         {
             if (insideCheckpoint && coinsCollected == gameEnvironment.numberOfCoins)
             {
-                AdvanceNextLevel();
+                onLevelAdvance?.Invoke(this, null);
             }
         }
 

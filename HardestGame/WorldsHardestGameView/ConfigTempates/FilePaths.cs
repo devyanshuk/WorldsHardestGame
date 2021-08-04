@@ -9,9 +9,11 @@ namespace WorldsHardestGameView.ConfigTempates
         private static NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
 
-        public static string BackgroundMusicPath => appSettings["BackgroundMusicPath"];
+        public static string BackgroundMusicPath => appSettings[nameof(BackgroundMusicPath)];
 
-        public static string CoinImagePath => appSettings["CoinImagePath"];
+        public static string CoinImagePath => appSettings[nameof(CoinImagePath)];
+
+        public static string LevelMessageJson => appSettings[nameof(LevelMessageJson)];
 
     }
 }

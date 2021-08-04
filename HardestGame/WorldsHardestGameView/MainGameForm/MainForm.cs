@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Media;
 using System.Drawing;
 using Castle.Windsor;
+using Newtonsoft.Json;
 using System.Windows.Forms;
 
 using WorldsHardestGameModel.Game;
@@ -27,6 +29,16 @@ namespace WorldsHardestGameView.MainGameForm
         private readonly ILocalSettings localSettings;
         private readonly SoundPlayer backgroundMusic;
         private readonly Bitmap coinImageBitmap;
+
+        private readonly LevelMessageRoot levelDescriptions;
+
+        #region level description
+
+        private bool displayingLevelDescription;
+        private int levelDescriptionOpacity = 255;
+        private int levelDescriptionOpacityVelocity = -10;
+
+        #endregion
 
 
         #region entity colors
@@ -64,6 +76,7 @@ namespace WorldsHardestGameView.MainGameForm
         {
             GameLogic.onPlayerDeath += OnPlayerDeath;
             GameLogic.onPlayerInsideCheckpointWithCoins += CheckpointAnimation;
+            GameLogic.onLevelAdvance += OnLevelAdvance;
             checkpointAnimationOpacity = checkpointOpacity;
             container = new WindsorContainer().Install(new DependencyInstaller());
             game = container.Resolve<IGameLogic>();
@@ -73,10 +86,11 @@ namespace WorldsHardestGameView.MainGameForm
                     | ControlStyles.UserPaint
                     | ControlStyles.DoubleBuffer, true);
             BackColor = Color.Chocolate;
-            game.InitializeGameEnvironment();
             coinImageBitmap = new Bitmap(FilePaths.CoinImagePath);
-            //backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
-            //backgroundMusic.PlayLooping();
+            backgroundMusic = new SoundPlayer(FilePaths.BackgroundMusicPath);
+            backgroundMusic.PlayLooping();
+            levelDescriptions = JsonConvert.DeserializeObject<LevelMessageRoot>(File.ReadAllText(FilePaths.LevelMessageJson));
+            displayingLevelDescription = true;
             updateTimer.Start();
         }
 
@@ -92,18 +106,37 @@ namespace WorldsHardestGameView.MainGameForm
             game.gameEnvironment.player.DeregisterNewDirection((Dir_4)e.KeyCode);
         }
 
+        private void DisplayLevelMessage(Graphics graphics)
+        {
+            using (var font = new Font("Arial", 40))
+            {
+                using (var brush = new SolidBrush(Color.FromArgb(levelDescriptionOpacity, Color.Black)))
+                {
+                    graphics.DrawString(levelDescriptions.levelMessages[game.level], font, brush, new PointF(550, 50));
+                }
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             var graphics = e.Graphics;
-            DrawGameBackGround(graphics);
-            DrawCoins(graphics);
-            DrawCheckpoints(graphics);
-            DrawPlayer(graphics);
-            DrawObstacles(graphics);
+
+            if (!displayingLevelDescription)
+            {
+                DrawGameBackGround(graphics);
+                DrawCoins(graphics);
+                DrawCheckpoints(graphics);
+                DrawPlayer(graphics);
+                DrawObstacles(graphics);
 #if DEBUG_MAIN_FORM
             DrawWallBoundariesForXYObstacles(graphics);
 #endif
-             DisplayScoreAndFails(graphics);
+                DisplayScoreAndFails(graphics);
+            }
+            else
+            {
+                DisplayLevelMessage(graphics);
+            }
 
         }
 
@@ -271,11 +304,11 @@ namespace WorldsHardestGameView.MainGameForm
         /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            if (!playerDead)
+            if (!playerDead && !displayingLevelDescription)
             {
                 game.UpdateEntityStates();
             }
-            else
+            else if (playerDead)
             {
                 playerDeathAnimationOpacity += playerDeathAnimationVelocity;
                 if (playerDeathAnimationOpacity <= 0)
@@ -283,6 +316,16 @@ namespace WorldsHardestGameView.MainGameForm
                     playerDead = false;
                     playerDeathAnimationOpacity = 255;
                     game.OnFail();
+                }
+            }
+            else if (displayingLevelDescription)
+            {
+                levelDescriptionOpacity += levelDescriptionOpacityVelocity;
+                if (levelDescriptionOpacity <= 0)
+                {
+                    displayingLevelDescription = false;
+                    levelDescriptionOpacity = 255;
+                    game.AdvanceNextLevel();
                 }
             }
             Invalidate();
@@ -314,6 +357,11 @@ namespace WorldsHardestGameView.MainGameForm
         public void CheckpointAnimation(object sender, EventArgs e)
         {
             animatedCheckpoint = sender as CheckPoint;
+        }
+
+        public void OnLevelAdvance(object sender, EventArgs e)
+        {
+            displayingLevelDescription = true;
         }
 
 

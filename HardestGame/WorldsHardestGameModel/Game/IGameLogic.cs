@@ -16,6 +16,8 @@ namespace WorldsHardestGameModel.Game
 
         void UpdateEntityStates();
 
+        void AdvanceNextLevel();
+
         void OnFail();
     }
 }

@@ -12,6 +12,9 @@ namespace WorldsHardestGameModel.Game
 {
     public class GameLogic : IGameLogic
     {
+
+        public const int totalLevels = 9;
+
         private readonly IParser parser;
         private readonly ILocalSettings localSettings;
 
@@ -32,6 +35,7 @@ namespace WorldsHardestGameModel.Game
 
         private int numberOfCoinsSinceLastCheckpointSave;
         private HashSet<Coin> collectedCoins;
+        private CheckPoint lastSavedCheckpoint;
 
         public GameLogic(IParser parser,
                          ILocalSettings localSettings,
@@ -55,12 +59,14 @@ namespace WorldsHardestGameModel.Game
             parser.ParseLevel(level, gameEnvironment);
             fails = 0;
             coinsCollected = 0;
+            lastSavedCheckpoint = null;
         }
 
         public void AdvanceNextLevel()
         {
-            level = 1 + level % 9;
+            level = 1 + level % totalLevels;
             InitializeGameEnvironment();
+            lastSavedCheckpoint = null;
         }
 
         public void UpdateEntityStates()
@@ -89,24 +95,22 @@ namespace WorldsHardestGameModel.Game
 
         private void CheckPlayerCheckpointCollision()
         {
-            if (gameEnvironment.player.isMoving)
+            foreach (var checkpoint in gameEnvironment.checkPoints)
             {
-                foreach (var checkpoint in gameEnvironment.checkPoints)
+                if (checkpoint.IsCollision(gameEnvironment.player))
                 {
-                    if (checkpoint.IsCollision(gameEnvironment.player))
+                    insideCheckpoint = true;
+                    lastSavedCheckpoint = checkpoint;
+                    if (numberOfCoinsSinceLastCheckpointSave > 0)
                     {
-                        insideCheckpoint = true;
-                        if (numberOfCoinsSinceLastCheckpointSave > 0)
-                        {
-                            numberOfCoinsSinceLastCheckpointSave = 0;
-                            collectedCoins.Clear();
-                            onPlayerInsideCheckpointWithCoins?.Invoke(checkpoint, null);
-                        }
-                        return;
+                        numberOfCoinsSinceLastCheckpointSave = 0;
+                        collectedCoins.Clear();
+                        onPlayerInsideCheckpointWithCoins?.Invoke(checkpoint, null);
                     }
+                    return;
                 }
-                insideCheckpoint = false;
             }
+            insideCheckpoint = false;
         }
 
 
@@ -203,7 +207,9 @@ namespace WorldsHardestGameModel.Game
 
         public void OnFail()
         {
-            gameEnvironment.player.topLeftPosition = gameEnvironment.player.initialTopLeftPosition;
+            gameEnvironment.player.topLeftPosition = lastSavedCheckpoint != null ?
+                                                     lastSavedCheckpoint.topLeftPosition :
+                                                     gameEnvironment.player.initialTopLeftPosition;
         }
     }
 }

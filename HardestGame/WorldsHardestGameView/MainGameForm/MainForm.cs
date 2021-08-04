@@ -48,7 +48,7 @@ namespace WorldsHardestGameView.MainGameForm
         private Color borderColor = Color.Black;
         private Color checkpointColor = Color.Green;
         private int checkpointOpacity = 150;
-        private Color filledSquareColor = Color.DarkOliveGreen;
+        private Color filledSquareColor = Color.FromArgb(120, 23, 23, 73);
 
         #endregion
 
@@ -196,7 +196,7 @@ namespace WorldsHardestGameView.MainGameForm
                 {
                     graphics.DrawString($"LEVEL : {game.level}", font, brush, new PointF(150, 5));
                     graphics.DrawString($"FAILS : {game.fails}", font, brush, new PointF(1080, 5));
-                    graphics.DrawString($"COINS : {game.coinsCollected}", font, brush, new PointF(600, 5));
+                    graphics.DrawString($"COINS : {game.coinsCollected}/{game.gameEnvironment.coins.Count}", font, brush, new PointF(600, 5));
                 }
             }
         }

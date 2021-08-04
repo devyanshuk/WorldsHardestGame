@@ -1,25 +1,40 @@
-﻿| O 9.5
-ch 1 6 3 3
-ch 19 6 3 3  
+﻿- O 2.4 R 2.9
+| K 4.7 Y 5.4
+() ( 2.2 8 7 B
+() ) 2.2 8 7 F
+() ) 2.2 16.5 8 > <
+ch 20 5 1 1
+ch 15 6 1 1
+ch 4 5 1 1
 
 #######################
 #######################
-#####HHHHHHHHHHHHHW####
-####WO1O1O1O1O1O1OW####
-####W1111111111111W####
-#WWWW1111111111111WWWWW
-W111W1111111111111W111W
-W1P1111111XXX111111111W
-W111W11111XXX11111W111W
-#WWWW1111111111111WWWWW
-####W1111111111111W####
-####W1O1O1O1O1O1O1W####
-####WHHHHHHHHHHHHH#####
+#######################
+#######################
+##HWW###WWWW##H####WW##
+#W11PWWH11XOHW1W##W11W#
+#WXW11WWBWWWWWK1W#W1W##
+#WYWW111X1111111WW11W##
+#W1W11WWFWWWWWHR<>XH###
+#H1OXHWH1X1OH##W11W####
+##HWW###WWWW####WW#####
+#######################
+#######################
 #######################
 #######################
 
-|	(y movement)
-O 6	(velocity of 'O' = 6)
+-	(x movement)
+O 1.4	(x-velocity of O = 1.4)
+R 1.2	(x-velocity of R = 1.2)
 
-//When defining a y-movement, do not forget to include the \
-  Y boundaries of the obstacle. Do so by adding 'H' in the map
+|	(y-movement)
+K 3.7	(y-velocity of k = 3.7)
+Y 4.4	(y-velocity of Y = 4.4)
+
+()	(circular movement)
+(	(clockwise)
+1.5	(angular velocity of circle F = 1.5)
+8 7 F   (centre of circle F = (8,7))
+
+)	(anticlockwise)
+16.5 8 < > (centre of circles < and > = (16.5))

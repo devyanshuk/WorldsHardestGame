@@ -14,10 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Levels\9">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Levels\1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Levels\2">
+    <None Update="Levels\6">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Levels\3">
@@ -29,16 +32,13 @@
     <None Update="Levels\5">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Levels\6">
+    <None Update="Levels\2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Levels\7">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Levels\8">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Levels\9">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Levels\LevelMessages.json">
